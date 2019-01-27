@@ -23,6 +23,14 @@ the letters A through Z (either lower or upper case) and whitespace. This way
 data to be encoded will never contain any numbers and numbers inside data to
 be decoded always represent the count for the following character.
 
+## Debugging
+
+- Put `require Logger` at the top of the `RunLengthEncoding` module.
+- Log values to the terminal using `Logger.debug inspect <variable>`.
+- Use the interactive shell to try out things by running `iex -S mix`.
+- In `iex` you can reload your module using `r RunLengthEncoding`
+
+
 ## Running tests
 
 Execute the tests with:
@@ -30,13 +38,6 @@ Execute the tests with:
 ```bash
 $ mix test
 ```
-
-## Debugging
-
-- Put `require Logger` at the top of the `RunLengthEncoding` module.
-- Log values to the terminal using `Logger.debug inspect <variable>`.
-- Use the interactive shell to try out things by running `iex -S mix`.
-
 
 ### Pending tests
 
