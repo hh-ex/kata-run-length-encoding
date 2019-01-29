@@ -23,7 +23,6 @@ defmodule RunLengthEncodingTest do
     assert RunLengthEncoding.encode("  hsqq qww  ") === "2 hs2q q2w2 "
   end
 
-  @tag :pending
   test "encode lowercase characters" do
     assert RunLengthEncoding.encode("aabbbcccc") === "2a3b4c"
   end
