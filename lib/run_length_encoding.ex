@@ -16,18 +16,18 @@ defmodule RunLengthEncoding do
   defp rle_char({char, 1}, result), do: char <> result
   defp rle_char({char, count}, result), do: "#{count}" <> char <> result
 
-  def assemble(tuples) do
+  defp encode_assemble(tuples) do
     tuples
     |> Enum.reduce("", &rle_char/2)
   end
 
   def encode(string) do
     encode_rec(String.codepoints(string), [])
-    |> assemble
+    |> encode_assemble
   end
 
   @digits 0..9
-          |> Enum.map(&("#{&1}"))
+          |> Enum.map(&to_string/1)
 
   defp decode_rec([], accu), do: accu
   defp decode_rec([h | t], {number, accu}) when not (h in @digits), do: decode_rec(t, {[], [{number, h} | accu]})
@@ -41,10 +41,13 @@ defmodule RunLengthEncoding do
            |> String.to_integer
 
   defp rldecode_char({reverse_digits, char}, result) do
-    String.duplicate(char, digits_to_int(reverse_digits |> Enum.reverse)) <> result
+    count = reverse_digits
+            |> Enum.reverse
+            |> digits_to_int
+    String.duplicate(char, count) <> result
   end
 
-  def decode_assemble({_, chars}) do
+  defp decode_assemble({_, chars}) do
     chars
     |> Enum.reduce("", &rldecode_char/2)
   end
