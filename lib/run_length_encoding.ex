@@ -9,6 +9,7 @@ defmodule RunLengthEncoding do
   require Logger
 
   def encode(string) do
+    string
   end
 
   def decode(string) do
