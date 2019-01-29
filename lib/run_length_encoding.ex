@@ -9,8 +9,42 @@ defmodule RunLengthEncoding do
   require Logger
 
   def encode(string) do
+    string
+    |> String.split("", trim: true)
+    |> Kernel.++([:sentinel])
+    |> Enum.reduce({0, "", ""}, fn char, {count, current_char, res} ->
+      case char do
+        :sentinel when count == 0 -> ""
+        :sentinel when count == 1 -> "#{res}#{current_char}"
+        :sentinel when count > 1 -> "#{res}#{count}#{current_char}"
+
+        ^current_char -> {count + 1, current_char, res}
+
+        new_char when count == 0 -> {1, new_char, res}
+        new_char when count == 1 -> {1, new_char, "#{res}#{current_char}"}
+        new_char when count > 1 -> {1, new_char, "#{res}#{count}#{current_char}"}
+      end
+    end)
   end
 
   def decode(string) do
+    string
+    |> String.split("", trim: true)
+    |> decode_recursive("", "")
+  end
+
+  def decode_recursive([], _, res) do
+    res
+  end
+
+  def decode_recursive([char | rest], count_string, res) do
+    case Integer.parse(char) do
+      {_number, _} -> 
+        decode_recursive(rest, count_string <> char, res)
+
+      :error -> 
+        count = if count_string == "", do: 1, else: String.to_integer(count_string)
+        decode_recursive(rest, "", res <> String.duplicate(char, count))
+    end
   end
 end
