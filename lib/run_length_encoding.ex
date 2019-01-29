@@ -9,8 +9,23 @@ defmodule RunLengthEncoding do
   require Logger
 
   def encode(string) do
+    string
+    |> String.graphemes()
+    |> Enum.reduce({"", 0, ""}, fn char, {current_char, n, current_string} ->
+      cond do
+        char == current_char -> {current_char, n + 1, current_string}
+        n <= 1 -> {char, 1, current_string <> current_char}
+        true -> {char, 1, current_string <> "#{n}#{current_char}"}
+      end
+    end)
+    |> handle_tuple()
   end
 
-  def decode(string) do
+  defp handle_tuple({_char, 0, string}), do: string
+  defp handle_tuple({char, 1, string}), do: string <> char
+  defp handle_tuple({char, n, string}), do: string <> "#{n}#{char}"
+
+  def decode(_string) do
+    :ok
   end
 end
