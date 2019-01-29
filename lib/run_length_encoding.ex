@@ -8,6 +8,9 @@ defmodule RunLengthEncoding do
   """
   require Logger
 
+
+  # accu :: [ { char, count:int } ]
+  # [ { "A", 2 }, { "B", 1 } ]
   defp encode_rec([], accu), do: accu
   defp encode_rec([h | t], [{h, count} | accu]), do: encode_rec(t, [{h, count + 1} | accu])
   defp encode_rec([h | t], [{old, count} | accu]), do: encode_rec(t, [{h, 1} | [{old, count} | accu]])
@@ -26,13 +29,21 @@ defmodule RunLengthEncoding do
     |> encode_assemble
   end
 
+
+
+
+
+
+
+
   @digits 0..9
           |> Enum.map(&to_string/1)
 
+  # accu :: { reverse_digits:[char], [ { reverse_digits:[char], char } ] }
+  # { [], [ { ["1","2"], "A" } ] }
   defp decode_rec([], accu), do: accu
   defp decode_rec([h | t], {number, accu}) when not (h in @digits), do: decode_rec(t, {[], [{number, h} | accu]})
   defp decode_rec([h | t], {number, accu}), do: decode_rec(t, {[h | number], accu})
-
 
   defp digits_to_int([]), do: 1
   defp digits_to_int(digits),
