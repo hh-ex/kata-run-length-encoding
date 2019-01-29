@@ -13,5 +13,6 @@ defmodule RunLengthEncoding do
   end
 
   def decode(string) do
+    string
   end
 end

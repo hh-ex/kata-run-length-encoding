@@ -32,7 +32,6 @@ defmodule RunLengthEncodingTest do
     assert RunLengthEncoding.encode("aabbbcccc") === "2a3b4c"
   end
 
-  @tag :pending
   test "decode empty string" do
     assert RunLengthEncoding.decode("") === ""
   end
