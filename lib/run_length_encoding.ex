@@ -8,8 +8,36 @@ defmodule RunLengthEncoding do
   """
   require Logger
 
+  defp encode_rec([], accu) do
+    accu
+  end
+
+  defp encode_rec([h | t], [{h, count} | accu]) do
+    encode_rec(t, [{h, count + 1} | accu])
+  end
+
+  defp encode_rec([h | t], [{old, count} | accu]) do
+    encode_rec(t, [{h, 1} | [{old, count} | accu]])
+  end
+
+  defp encode_rec([h | t], []) do
+    encode_rec(t, [{h, 1}])
+  end
+
+  defp rle_char({char, 1}, result) do
+    char <> result
+  end
+
+  defp rle_char({char, count}, result) do
+    "#{count}" <> char <> result
+  end
+
+  def assemble(tuples) do
+    tuples |> Enum.reduce("", &rle_char/2)
+  end
+
   def encode(string) do
-    string
+    encode_rec(String.codepoints(string), []) |> assemble
   end
 
   def decode(string) do

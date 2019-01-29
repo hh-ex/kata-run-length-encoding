@@ -10,18 +10,15 @@ defmodule RunLengthEncodingTest do
     assert RunLengthEncoding.encode("XYZ") === "XYZ"
   end
 
-  @tag :pending
   test "encode string with no single characters" do
     assert RunLengthEncoding.encode("AABBBCCCC") == "2A3B4C"
   end
 
-  @tag :pending
   test "encode single characters mixed with repeated characters" do
     assert RunLengthEncoding.encode("WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB") ===
              "12WB12W3B24WB"
   end
 
-  @tag :pending
   test "encode multiple whitespace mixed in string" do
     assert RunLengthEncoding.encode("  hsqq qww  ") === "2 hs2q q2w2 "
   end
