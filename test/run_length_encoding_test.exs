@@ -6,7 +6,6 @@ defmodule RunLengthEncodingTest do
     assert RunLengthEncoding.encode("") === ""
   end
 
-  @tag :pending
   test "encode single characters only are encoded without count" do
     assert RunLengthEncoding.encode("XYZ") === "XYZ"
   end
@@ -36,7 +35,6 @@ defmodule RunLengthEncodingTest do
     assert RunLengthEncoding.decode("") === ""
   end
 
-  @tag :pending
   test "decode single characters only" do
     assert RunLengthEncoding.decode("XYZ") === "XYZ"
   end
