@@ -26,7 +26,31 @@ defmodule RunLengthEncoding do
     |> assemble
   end
 
+  @digits 0..9
+          |> Enum.map(&("#{&1}"))
+
+  defp decode_rec([], accu), do: accu
+  defp decode_rec([h | t], {number, accu}) when not (h in @digits), do: decode_rec(t, {[], [{number, h} | accu]})
+  defp decode_rec([h | t], {number, accu}), do: decode_rec(t, {[h | number], accu})
+
+
+  defp digits_to_int([]), do: 1
+  defp digits_to_int(digits),
+       do: digits
+           |> Enum.join("")
+           |> String.to_integer
+
+  defp rldecode_char({reverse_digits, char}, result) do
+    String.duplicate(char, digits_to_int(reverse_digits |> Enum.reverse)) <> result
+  end
+
+  def decode_assemble({_, chars}) do
+    chars
+    |> Enum.reduce("", &rldecode_char/2)
+  end
+
   def decode(string) do
-    string
+    decode_rec(String.codepoints(string), {[], []})
+    |> decode_assemble
   end
 end
